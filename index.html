@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Magnolia Research</title>
+  <meta name="description" content="Magnolia Research helps AI labs push their frontier model capabilities by building targeted post-training data and reinforcement learning environments grounded in real engineering and research workflows." />
+  <style>
+    :root {
+      --bg: #f7f4ee;   /* warm off-white */
+      --ink: #33403a;  /* deep muted green */
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--ink);
+      font-family: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, "Times New Roman", serif;
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+    }
+
+    main {
+      max-width: 40rem;
+      width: 100%;
+      padding: 3rem 1.5rem;
+      text-align: center;
+      animation: fade-in 1.4s ease both;
+    }
+
+    .wordmark {
+      font-size: 0.95rem;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      font-weight: 400;
+      margin: 0 0 2.75rem;
+      opacity: 0.75;
+    }
+
+    p.lede {
+      font-size: 1.2rem;
+      margin: 0 auto 3rem;
+      text-wrap: pretty;
+    }
+
+    .contact {
+      font-size: 1.05rem;
+      opacity: 0.9;
+    }
+
+    .contact .emails {
+      margin-top: 0.4rem;
+    }
+
+    a {
+      color: var(--ink);
+      text-decoration: none;
+      border-bottom: 1px solid rgba(51, 64, 58, 0.35);
+      padding-bottom: 1px;
+      transition: border-color 0.2s ease;
+    }
+
+    a:hover {
+      border-bottom-color: var(--ink);
+    }
+
+    .sep {
+      opacity: 0.4;
+      margin: 0 0.55rem;
+    }
+
+    @keyframes fade-in {
+      from { opacity: 0; transform: translateY(8px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (max-width: 30rem) {
+      p.lede { font-size: 1.1rem; }
+      .sep { display: block; height: 0.4rem; margin: 0; }
+      .sep::after { content: ""; }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <h1 class="wordmark">Magnolia Research</h1>
+    <p class="lede">
+      Magnolia Research helps AI labs push their frontier model capabilities by
+      finding where their systems fall short and building targeted post-training
+      data to close the gap. We create high-quality reinforcement learning
+      environments grounded in real engineering and research workflows across the
+      AI computing stack, pairing realistic tools and verifiable outcomes so
+      models have a place to practice complex work and labs can measure progress.
+    </p>
+    <p class="contact">
+      Interested in collaborating?
+      <span class="emails">
+        <a href="mailto:luke@magnoliaresearch.ai">luke@magnoliaresearch.ai</a>
+        <span class="sep">&middot;</span>
+        <a href="mailto:gerardo@magnoliaresearch.ai">gerardo@magnoliaresearch.ai</a>
+      </span>
+    </p>
+  </main>
+</body>
+</html>
