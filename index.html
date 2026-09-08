@@ -40,7 +40,7 @@
     }
 
     .wordmark {
-      font-size: 0.95rem;
+      font-size: clamp(1.3rem, 4vw, 1.8rem);
       letter-spacing: 0.28em;
       text-transform: uppercase;
       font-weight: 400;
@@ -60,7 +60,12 @@
     }
 
     .contact .emails {
+      display: flex;
+      align-items: baseline;
+      justify-content: center;
       margin-top: 0.4rem;
+      font-size: clamp(0.7rem, 2.5vw, 1.05rem);
+      white-space: nowrap;
     }
 
     a {
@@ -87,8 +92,7 @@
 
     @media (max-width: 30rem) {
       p.lede { font-size: 1.1rem; }
-      .sep { display: block; height: 0.4rem; margin: 0; }
-      .sep::after { content: ""; }
+      .sep { margin: 0 0.35rem; }
     }
   </style>
 </head>
@@ -96,15 +100,12 @@
   <main>
     <h1 class="wordmark">Magnolia Research</h1>
     <p class="lede">
-      Magnolia Research helps AI labs push their frontier model capabilities by
-      finding where their systems fall short and building targeted post-training
-      data to close the gap. We create high-quality reinforcement learning
-      environments grounded in real engineering and research workflows across the
-      AI computing stack, pairing realistic tools and verifiable outcomes so
-      models have a place to practice complex work and labs can measure progress.
+
+      Magnolia Research is pushing the frontier of AI capablities through data.
+      We provide high-quality post-training data for technical tasks.
     </p>
     <p class="contact">
-      Interested in collaborating?
+      Partner with us
       <span class="emails">
         <a href="mailto:luke@magnoliaresearch.ai">luke@magnoliaresearch.ai</a>
         <span class="sep">&middot;</span>
