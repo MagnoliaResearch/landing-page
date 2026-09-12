@@ -9,6 +9,7 @@
     :root {
       --bg: #f7f4ee;   /* warm off-white */
       --ink: #33403a;  /* deep muted green */
+      --magnolia-opacity: 0.22;
     }
 
     * { box-sizing: border-box; }
@@ -29,14 +30,64 @@
       align-items: center;
       justify-content: center;
       min-height: 100vh;
+      overflow-x: hidden;
     }
 
     main {
+      position: relative;
+      z-index: 1;
       max-width: 40rem;
       width: 100%;
       padding: 3rem 1.5rem;
       text-align: center;
       animation: fade-in 1.4s ease both;
+    }
+
+    .magnolia {
+      position: fixed;
+      right: -1vw;
+      bottom: -2vh;
+      width: min(66vw, 900px);
+      height: min(80vh, 880px);
+      z-index: 0;
+      pointer-events: none;
+      user-select: none;
+      overflow: hidden;
+      opacity: 0;
+      animation: magnolia-appear 2.4s ease 0.45s forwards;
+      -webkit-mask-image: radial-gradient(
+        ellipse 100% 100% at 100% 100%,
+        #000 0%,
+        #000 38%,
+        rgba(0, 0, 0, 0.4) 68%,
+        transparent 92%
+      );
+      mask-image: radial-gradient(
+        ellipse 100% 100% at 100% 100%,
+        #000 0%,
+        #000 38%,
+        rgba(0, 0, 0, 0.4) 68%,
+        transparent 92%
+      );
+    }
+
+    .magnolia-ascii {
+      position: absolute;
+      right: 0;
+      bottom: 0;
+      margin: 0;
+      color: var(--ink);
+      font-family: "SF Mono", ui-monospace, Menlo, Consolas, "Liberation Mono", monospace;
+      font-size: clamp(4px, 0.7vw, 8px);
+      font-weight: 400;
+      line-height: 1.08;
+      letter-spacing: 0.02em;
+      white-space: pre;
+      font-variant-ligatures: none;
+    }
+
+    .magnolia-ascii-b {
+      opacity: 0;
     }
 
     .wordmark {
@@ -95,13 +146,91 @@
       to   { opacity: 1; transform: translateY(0); }
     }
 
+    @keyframes magnolia-appear {
+      to { opacity: var(--magnolia-opacity); }
+    }
+
+    @media (max-width: 40rem) {
+      :root { --magnolia-opacity: 0.18; }
+
+      main {
+        padding: 2.25rem 1.35rem 3.5rem;
+      }
+
+      .wordmark {
+        font-size: clamp(1.05rem, 5.2vw, 1.45rem);
+        letter-spacing: 0.14em;
+        margin-bottom: 1.75rem;
+      }
+
+      .lede-first {
+        white-space: normal;
+      }
+
+      p.lede {
+        font-size: 1.05rem;
+        margin-bottom: 2.1rem;
+      }
+
+      .contact {
+        font-size: 1rem;
+      }
+
+      .contact .emails {
+        white-space: normal;
+        font-size: 0.95rem;
+      }
+
+      .magnolia {
+        width: min(78vw, 340px);
+        height: min(46vh, 380px);
+        right: -6vw;
+        bottom: -2vh;
+        -webkit-mask-image: radial-gradient(
+          ellipse 92% 88% at 100% 100%,
+          #000 0%,
+          #000 26%,
+          rgba(0, 0, 0, 0.35) 52%,
+          transparent 76%
+        );
+        mask-image: radial-gradient(
+          ellipse 92% 88% at 100% 100%,
+          #000 0%,
+          #000 26%,
+          rgba(0, 0, 0, 0.35) 52%,
+          transparent 76%
+        );
+      }
+
+      .magnolia-ascii {
+        font-size: 3.25px;
+        transform: scale(0.62);
+        transform-origin: right bottom;
+      }
+    }
+
     @media (max-width: 30rem) {
-      p.lede { font-size: 1.1rem; }
+      p.lede { font-size: 1.02rem; }
       .sep { margin: 0 0.35rem; }
+      .wordmark {
+        letter-spacing: 0.11em;
+        font-size: clamp(0.98rem, 5vw, 1.25rem);
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .magnolia {
+        animation: none;
+        opacity: var(--magnolia-opacity);
+      }
     }
   </style>
 </head>
 <body>
+  <div class="magnolia" aria-hidden="true">
+    <pre class="magnolia-ascii magnolia-ascii-a"></pre>
+    <pre class="magnolia-ascii magnolia-ascii-b"></pre>
+  </div>
   <main>
     <h1 class="wordmark">Magnolia Research</h1>
     <p class="lede">
@@ -115,5 +244,50 @@
       </span>
     </p>
   </main>
+  <script src="magnolia-ascii.js"></script>
+  <script>
+    (function () {
+      var frames = window.MAGNOLIA_ASCII;
+      var a = document.querySelector(".magnolia-ascii-a");
+      var b = document.querySelector(".magnolia-ascii-b");
+      if (!frames || !frames.length || !a || !b) return;
+      a.textContent = frames[0];
+      b.textContent = frames[1] || frames[0];
+      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+      var last = frames.length - 1;
+      var cycle = last * 2;
+      var msPerStep = 220;
+      var period = cycle * msPerStep;
+      var t0 = performance.now();
+      var shownA = -1;
+      var shownB = -1;
+
+      function pingPong(p) {
+        return p <= last ? p : cycle - p;
+      }
+
+      function tick(now) {
+        var t = ((now - t0) % period) / msPerStep;
+        var i0 = Math.floor(t);
+        var mix = t - i0;
+        var f0 = pingPong(i0 % cycle);
+        var f1 = pingPong((i0 + 1) % cycle);
+        if (f0 !== shownA) {
+          a.textContent = frames[f0];
+          shownA = f0;
+        }
+        if (f1 !== shownB) {
+          b.textContent = frames[f1];
+          shownB = f1;
+        }
+        a.style.opacity = String(1 - mix);
+        b.style.opacity = String(mix);
+        requestAnimationFrame(tick);
+      }
+
+      requestAnimationFrame(tick);
+    })();
+  </script>
 </body>
 </html>
