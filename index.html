@@ -151,7 +151,7 @@
     }
 
     @media (max-width: 40rem) {
-      :root { --magnolia-opacity: 0.18; }
+      :root { --magnolia-opacity: 0.28; }
 
       main {
         padding: 2.25rem 1.35rem 3.5rem;
@@ -169,43 +169,45 @@
 
       p.lede {
         font-size: 1.05rem;
-        margin-bottom: 2.1rem;
+        margin: 0 0 2.1rem;
+        text-align: left;
       }
 
       .contact {
         font-size: 1rem;
+        text-align: left;
       }
 
       .contact .emails {
+        justify-content: flex-start;
         white-space: normal;
         font-size: 0.95rem;
       }
 
       .magnolia {
-        width: min(78vw, 340px);
-        height: min(46vh, 380px);
-        right: -6vw;
-        bottom: -2vh;
+        width: min(92vw, 440px);
+        height: min(62vh, 520px);
+        right: -2vw;
+        bottom: 0;
         -webkit-mask-image: radial-gradient(
-          ellipse 92% 88% at 100% 100%,
+          ellipse 110% 110% at 100% 100%,
           #000 0%,
-          #000 26%,
-          rgba(0, 0, 0, 0.35) 52%,
-          transparent 76%
+          #000 40%,
+          rgba(0, 0, 0, 0.5) 68%,
+          transparent 90%
         );
         mask-image: radial-gradient(
-          ellipse 92% 88% at 100% 100%,
+          ellipse 110% 110% at 100% 100%,
           #000 0%,
-          #000 26%,
-          rgba(0, 0, 0, 0.35) 52%,
-          transparent 76%
+          #000 40%,
+          rgba(0, 0, 0, 0.5) 68%,
+          transparent 90%
         );
       }
 
       .magnolia-ascii {
-        font-size: 3.25px;
-        transform: scale(0.62);
-        transform-origin: right bottom;
+        font-size: 5px;
+        transform: none;
       }
     }
 
