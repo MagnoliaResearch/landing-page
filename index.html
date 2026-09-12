@@ -159,7 +159,7 @@
     }
 
     @media (max-width: 40rem) {
-      :root { --magnolia-opacity: 0.32; }
+      :root { --magnolia-opacity: 0.5; }
 
       main {
         padding: 2.25rem 1.35rem 3.5rem;
@@ -202,23 +202,23 @@
 
       .magnolia-veil {
         background: radial-gradient(
-          ellipse 125% 115% at 100% 100%,
+          ellipse 88% 78% at 100% 100%,
           transparent 0%,
-          transparent 16%,
-          rgba(247, 244, 238, 0.38) 38%,
-          rgba(247, 244, 238, 0.78) 62%,
-          var(--bg) 86%
+          transparent 10%,
+          rgba(247, 244, 238, 0.28) 26%,
+          rgba(247, 244, 238, 0.72) 48%,
+          var(--bg) 68%
         );
       }
 
       .magnolia-ascii {
-        font-size: max(2.5vw, 1.2vh);
+        font-size: calc(100vh / 134);
         line-height: 1.08;
         letter-spacing: 0.02em;
-        -webkit-transform-origin: right bottom;
-        transform-origin: right bottom;
-        -webkit-transform: scale(0.38, 1.2);
-        transform: scale(0.38, 1.2);
+        -webkit-transform-origin: 100% 100%;
+        transform-origin: 100% 100%;
+        -webkit-transform: rotate(90deg) translateY(100%);
+        transform: rotate(90deg) translateY(100%);
       }
     }
 
