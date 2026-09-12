@@ -53,21 +53,27 @@
       pointer-events: none;
       user-select: none;
       overflow: hidden;
+    }
+
+    .magnolia-art {
+      position: absolute;
+      inset: 0;
       opacity: 0;
       animation: magnolia-appear 2.4s ease 0.45s forwards;
-      -webkit-mask-image: radial-gradient(
+      -webkit-transform: translateZ(0);
+      transform: translateZ(0);
+    }
+
+    .magnolia-veil {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background: radial-gradient(
         ellipse 100% 100% at 100% 100%,
-        #000 0%,
-        #000 38%,
-        rgba(0, 0, 0, 0.4) 68%,
-        transparent 92%
-      );
-      mask-image: radial-gradient(
-        ellipse 100% 100% at 100% 100%,
-        #000 0%,
-        #000 38%,
-        rgba(0, 0, 0, 0.4) 68%,
-        transparent 92%
+        transparent 0%,
+        transparent 38%,
+        rgba(247, 244, 238, 0.55) 68%,
+        var(--bg) 92%
       );
     }
 
@@ -84,6 +90,8 @@
       letter-spacing: 0.02em;
       white-space: pre;
       font-variant-ligatures: none;
+      -webkit-transform: translateZ(0);
+      transform: translateZ(0);
     }
 
     .magnolia-ascii-b {
@@ -190,21 +198,16 @@
         height: auto;
         right: 0;
         bottom: 0;
-        -webkit-mask-image: radial-gradient(
+      }
+
+      .magnolia-veil {
+        background: radial-gradient(
           ellipse 125% 115% at 100% 100%,
-          #000 0%,
-          #000 16%,
-          rgba(0, 0, 0, 0.62) 38%,
-          rgba(0, 0, 0, 0.22) 62%,
-          transparent 86%
-        );
-        mask-image: radial-gradient(
-          ellipse 125% 115% at 100% 100%,
-          #000 0%,
-          #000 16%,
-          rgba(0, 0, 0, 0.62) 38%,
-          rgba(0, 0, 0, 0.22) 62%,
-          transparent 86%
+          transparent 0%,
+          transparent 16%,
+          rgba(247, 244, 238, 0.38) 38%,
+          rgba(247, 244, 238, 0.78) 62%,
+          var(--bg) 86%
         );
       }
 
@@ -224,7 +227,7 @@
     }
 
     @media (prefers-reduced-motion: reduce) {
-      .magnolia {
+      .magnolia-art {
         animation: none;
         opacity: var(--magnolia-opacity);
       }
@@ -233,8 +236,11 @@
 </head>
 <body>
   <div class="magnolia" aria-hidden="true">
-    <pre class="magnolia-ascii magnolia-ascii-a"></pre>
-    <pre class="magnolia-ascii magnolia-ascii-b"></pre>
+    <div class="magnolia-art">
+      <pre class="magnolia-ascii magnolia-ascii-a"></pre>
+      <pre class="magnolia-ascii magnolia-ascii-b"></pre>
+    </div>
+    <div class="magnolia-veil"></div>
   </div>
   <main>
     <h1 class="wordmark">Magnolia Research</h1>
@@ -258,22 +264,27 @@
       if (!frames || !frames.length || !a || !b) return;
       a.textContent = frames[0];
       b.textContent = frames[1] || frames[0];
-      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
       var last = frames.length - 1;
       var cycle = last * 2;
       var msPerStep = 220;
       var period = cycle * msPerStep;
-      var t0 = performance.now();
+      var nowFn = (window.performance && performance.now)
+        ? function () { return performance.now(); }
+        : function () { return Date.now(); };
+      var t0 = nowFn();
       var shownA = -1;
       var shownB = -1;
+      var usingRaf = typeof requestAnimationFrame === "function";
 
       function pingPong(p) {
         return p <= last ? p : cycle - p;
       }
 
       function tick(now) {
+        if (now == null || isNaN(now)) now = nowFn();
         var t = ((now - t0) % period) / msPerStep;
+        if (t < 0) t += period / msPerStep;
         var i0 = Math.floor(t);
         var mix = t - i0;
         var f0 = pingPong(i0 % cycle);
@@ -288,10 +299,14 @@
         }
         a.style.opacity = String(1 - mix);
         b.style.opacity = String(mix);
-        requestAnimationFrame(tick);
+        if (usingRaf) requestAnimationFrame(tick);
       }
 
-      requestAnimationFrame(tick);
+      if (usingRaf) {
+        requestAnimationFrame(tick);
+      } else {
+        setInterval(function () { tick(nowFn()); }, 50);
+      }
     })();
   </script>
 </body>
